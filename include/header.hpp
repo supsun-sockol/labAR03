@@ -17,8 +17,8 @@ public:
     shared_ptr_control_block(){}
     ~shared_ptr_control_block(){}
 private:
-    std::map <T*, std::atomic_uint> table;
-
+    //std::map <T*, std::atomic_uint> table;
+    std::map <T*, int> table;
     friend class SharedPtr<T>;
 };
 
@@ -34,7 +34,7 @@ public:
     explicit SharedPtr(T* Ptr){
         auto it = Shared_ptr_control_block<T>.table.find(Ptr);
         if (it == Shared_ptr_control_block<T>.table.end()){
-            it->second = 1;
+            Shared_ptr_control_block<T>.table[Ptr] = 1;
         } else{
             it->second++;
         }
@@ -98,7 +98,7 @@ public:
     }
     // возвращает количество объектов SharedPtr,
     //которые ссылаются на тот же управляемый объект
-    auto use_count() const -> size_t{
+    auto use_count() const{
         return Shared_ptr_control_block<T>.table[this->tptr];
     }
 

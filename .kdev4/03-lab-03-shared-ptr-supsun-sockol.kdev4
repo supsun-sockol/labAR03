@@ -15,5 +15,38 @@ Extra Arguments=
 Install Directory=/usr/local
 Runtime=Host System
 
+[Launch]
+Launch Configurations=Launch Configuration 0,Launch Configuration 1
+
+[Launch][Launch Configuration 0]
+Configured Launch Modes=execute
+Configured Launchers=nativeAppLauncher
+Name=New Compiled Binary Launcher
+Type=Native Application
+
+[Launch][Launch Configuration 0][Data]
+Arguments=
+Dependencies=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x00)
+Dependency Action=Nothing
+EnvironmentGroup=
+Executable=file:///home/supsun/Documents/AR/03-lab-03-shared-ptr-supsun-sockol
+External Terminal=konsole --noclose --workdir %workdir -e %exe
+Kill Before Executing Again=4194304
+Project Target=03-lab-03-shared-ptr-supsun-sockol,tests
+Use External Terminal=false
+Working Directory=
+isExecutable=false
+
+[Launch][Launch Configuration 1]
+Configured Launch Modes=execute
+Configured Launchers=nativeAppLauncher
+Name=tests
+Type=Native Application
+
+[Launch][Launch Configuration 1][Data]
+Dependencies=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x01\x00\x00\x00\x0b\x00\x00\x00\x00\x02\x00\x00\x00D\x000\x003\x00-\x00l\x00a\x00b\x00-\x000\x003\x00-\x00s\x00h\x00a\x00r\x00e\x00d\x00-\x00p\x00t\x00r\x00-\x00s\x00u\x00p\x00s\x00u\x00n\x00-\x00s\x00o\x00c\x00k\x00o\x00l\x00\x00\x00\n\x00t\x00e\x00s\x00t\x00s)
+Dependency Action=Build
+Project Target=03-lab-03-shared-ptr-supsun-sockol,tests
+
 [Project]
 VersionControlSupport=kdevgit
