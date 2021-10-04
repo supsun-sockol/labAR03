@@ -41,12 +41,12 @@ public:
         this->tptr = Ptr;
     }
     SharedPtr(const SharedPtr& r){
-        Shared_ptr_control_block<T>.table[r.ptr]++;
-        this->tptr = r.ptr;
+        Shared_ptr_control_block<T>.table[r.tptr]++;
+        this->tptr = r.tptr;
     }
     SharedPtr(SharedPtr&& r){
         this->tptr = nullptr;
-        std::swap(this->tptr, r.ptr);
+        std::swap(this->tptr, r.tptr);
     }
     ~SharedPtr(){
         if (this->tptr != nullptr){
@@ -58,8 +58,8 @@ public:
     }
     auto operator=(const SharedPtr& r) -> SharedPtr&{
         if (r != *this){
-            Shared_ptr_control_block<T>.table[r.ptr]++;
-            this->tptr = r.ptr;
+            Shared_ptr_control_block<T>.table[r.tptr]++;
+            this->tptr = r.tptr;
         }
         return *this;
     }
@@ -67,7 +67,7 @@ public:
         if (r != *this){
             this->tptr = nullptr;
             Shared_ptr_control_block<T>.table[this->tptr]--;
-            std::swap(this->tptr, r.ptr);
+            std::swap(this->tptr, r.tptr);
         }
         return *this;
     }
@@ -94,7 +94,7 @@ public:
         Shared_ptr_control_block<T>.table[this->tptr]++;
     }
     void swap(SharedPtr& r){
-        std::swap(this->tptr, r.ptr);
+        std::swap(this->tptr, r.tptr);
     }
     // возвращает количество объектов SharedPtr,
     //которые ссылаются на тот же управляемый объект
