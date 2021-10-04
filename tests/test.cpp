@@ -13,8 +13,8 @@ TEST(SharedPtr, test1) {
     EXPECT_FALSE(A);
 }
 TEST(SharedPtr, test2) {
-    int a = 5;
-    SharedPtr<int> A(&a);
+    int *a = new int(5);
+    SharedPtr<int> A(a);
     EXPECT_EQ(A.use_count(), 1);
     EXPECT_EQ(*A, 5);
 }
