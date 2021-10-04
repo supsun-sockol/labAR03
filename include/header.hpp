@@ -29,7 +29,7 @@ template <typename T>
 class SharedPtr {
 public:
     SharedPtr(){
-        this->ptr = nullptr;
+        this->tptr = nullptr;
     }
     explicit SharedPtr(T* Ptr){
         auto it = Shared_ptr_control_block<T>.table.find(Ptr);
@@ -38,72 +38,72 @@ public:
         } else{
             it->second++;
         }
-        this->ptr = Ptr;
+        this->tptr = Ptr;
     }
     SharedPtr(const SharedPtr& r){
         Shared_ptr_control_block<T>.table[r.ptr]++;
-        this->ptr = r.ptr;
+        this->tptr = r.ptr;
     }
     SharedPtr(SharedPtr&& r){
-        this->ptr =nullptr;
-        std::swap(this->ptr, r.ptr);
+        this->tptr = nullptr;
+        std::swap(this->tptr, r.ptr);
     }
     ~SharedPtr(){
-        if (this->ptr != nullptr){
-            Shared_ptr_control_block<T>.table[this->ptr]--;
-            if (Shared_ptr_control_block<T>.table[this->ptr] == 0){
-                delete[] this->ptr;
+        if (this->tptr != nullptr){
+            Shared_ptr_control_block<T>.table[this->tptr]--;
+            if (Shared_ptr_control_block<T>.table[this->tptr] == 0){
+                delete[] this->tptr;
             }
         }
     }
     auto operator=(const SharedPtr& r) -> SharedPtr&{
         if (r != *this){
             Shared_ptr_control_block<T>.table[r.ptr]++;
-            this->ptr = r.ptr;
+            this->tptr = r.ptr;
         }
         return *this;
     }
     auto operator=(SharedPtr&& r) -> SharedPtr&{
         if (r != *this){
-            this->ptr=nullptr;
-            Shared_ptr_control_block<T>.table[this->ptr]--;
-            std::swap(this->ptr, r.ptr);
+            this->tptr = nullptr;
+            Shared_ptr_control_block<T>.table[this->tptr]--;
+            std::swap(this->tptr, r.ptr);
         }
         return *this;
     }
 
     // проверяет, указывает ли указатель на объект
-    operator bool() const{return this->ptr != nullptr;}
+    operator bool() const{return this->tptr != nullptr;}
     auto operator*() const -> T&{
-            return *this->ptr;
+            return *this->tptr;
     }
     auto operator->() const -> T*{
-        return this->ptr;
+        return this->tptr;
     }
 
     auto get() -> T*{
-        return this->ptr;
+        return this->tptr;
     }
     void reset(){
-        this->ptr=nullptr;
-        Shared_ptr_control_block<T>.table[this->ptr]--;
+        this->tptr = nullptr;
+        Shared_ptr_control_block<T>.table[this->tptr]--;
     }
     void reset(T* ptr){
-        Shared_ptr_control_block<T>.table[this->ptr]--;
-        this->ptr=ptr;
-        Shared_ptr_control_block<T>.table[this->ptr]++;
+        Shared_ptr_control_block<T>.table[this->tptr]--;
+        this->tptr = ptr;
+        Shared_ptr_control_block<T>.table[this->tptr]++;
     }
     void swap(SharedPtr& r){
-        std::swap(this->ptr, r.ptr);
+        std::swap(this->tptr, r.ptr);
     }
     // возвращает количество объектов SharedPtr,
     //которые ссылаются на тот же управляемый объект
     auto use_count() const -> size_t{
-        return Shared_ptr_control_block<T>.table[this->ptr];
+        return Shared_ptr_control_block<T>.table[this->tptr];
     }
 
 private:
-    T* ptr;
+    T* tptr;
 };
 
 #endif // INCLUDE_HEADER_HPP_
