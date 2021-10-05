@@ -85,8 +85,8 @@ public:
         return this->tptr;
     }
     void reset(){
-        this->tptr = nullptr;
         Shared_ptr_control_block<T>.table[this->tptr]--;
+        this->tptr = nullptr;
     }
     void reset(T* ptr){
         Shared_ptr_control_block<T>.table[this->tptr]--;
@@ -99,6 +99,7 @@ public:
     // возвращает количество объектов SharedPtr,
     //которые ссылаются на тот же управляемый объект
     auto use_count() const{
+        if (this->tptr == nullptr) return 0;
         return Shared_ptr_control_block<T>.table[this->tptr];
     }
 
