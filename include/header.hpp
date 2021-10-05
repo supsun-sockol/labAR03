@@ -41,7 +41,6 @@ public:
             it->second++;
              this->tptr = Ptr;
         }
-
     }
     SharedPtr(const SharedPtr& r){
         Shared_ptr_control_block<T>.table[r.tptr]++;
@@ -95,7 +94,6 @@ public:
             }
             this->tptr = nullptr;
         }
-
     }
     void reset(T* ptr){
         if (this->tptr != nullptr) {

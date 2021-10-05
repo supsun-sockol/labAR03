@@ -43,6 +43,29 @@ TEST(SharedPtr, test4) {
 
 TEST(SharedPtr, test5) {
     int a = 5;
+    SharedPtr<int> A(&a);
+    SharedPtr<int> B(A.get());
+    EXPECT_EQ(A.use_count(), 2);
+    EXPECT_EQ(A.get()[0], 5);
+    EXPECT_EQ(B.use_count(), 2);
+    EXPECT_EQ(B.get()[0], 5);
+
+}
+
+TEST(SharedPtr, test6) {
+    int a = 5;
+    SharedPtr<int> A(&a);
+    SharedPtr<int> B;
+    B=A;
+    EXPECT_EQ(A.use_count(), 2);
+    EXPECT_EQ(A.get()[0], 5);
+    EXPECT_EQ(B.use_count(), 2);
+    EXPECT_EQ(B.get()[0], 5);
+
+}
+
+TEST(SharedPtr, test7) {
+    int a = 5;
     int b = 3;
     SharedPtr<int> A(&a);
     SharedPtr<int> B(&b);
@@ -51,7 +74,7 @@ TEST(SharedPtr, test5) {
     EXPECT_EQ(*B, 5);
 }
 
-TEST(SharedPtr, test6) {
+TEST(SharedPtr, test8) {
     int a = 5;
     int b = 3;
     SharedPtr<int> A(&a);
@@ -61,7 +84,7 @@ TEST(SharedPtr, test6) {
     EXPECT_EQ(B.use_count(), 1);
 }
 
-TEST(SharedPtr, test7) {
+TEST(SharedPtr, test9) {
     int a = 5;
     int b = 3;
     SharedPtr<int> A(&a);
@@ -73,7 +96,19 @@ TEST(SharedPtr, test7) {
     EXPECT_EQ(B.use_count(), 1);
 }
 
-TEST(SharedPtr, test8) {
+TEST(SharedPtr, test10) {
+    int a = 5;
+    int b = 3;
+    SharedPtr<int> A(&a);
+    SharedPtr<int> B(&b);
+    A.reset(B.get());
+    EXPECT_EQ(*A, 3);
+    EXPECT_EQ(*B, 3);
+    EXPECT_EQ(A.use_count(), 2);
+    EXPECT_EQ(B.use_count(), 2);
+}
+
+TEST(SharedPtr, test11) {
     class phone {
 
     private:
@@ -89,3 +124,6 @@ TEST(SharedPtr, test8) {
     SharedPtr<phone> A(&a);
     EXPECT_EQ(A->number, 123);
 }
+
+
+
