@@ -31,6 +31,16 @@ TEST(SharedPtr, test3) {
     EXPECT_FALSE(A);
 }
 
+TEST(SharedPtr, test3_2) {
+    int a = 5;
+    SharedPtr<int> A(&a);
+    SharedPtr<int> B(std::move(A));
+    EXPECT_EQ(A.use_count(), 0);
+    EXPECT_EQ(B.use_count(), 1);
+    EXPECT_EQ(*B, 5);
+    EXPECT_FALSE(A);
+}
+
 TEST(SharedPtr, test4) {
     int a = 5;
     SharedPtr<int> A(&a);
