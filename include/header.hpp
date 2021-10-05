@@ -54,7 +54,7 @@ public:
         if (this->tptr != nullptr){
             Shared_ptr_control_block<T>.table[this->tptr]--;
             if (Shared_ptr_control_block<T>.table[this->tptr] == 0){
-                delete[] this->tptr;
+                delete this->tptr;
             }
         }
     }
@@ -90,7 +90,7 @@ public:
         if (this->tptr != nullptr) {
             Shared_ptr_control_block<T>.table[this->tptr]--;
             if (Shared_ptr_control_block<T>.table[this->tptr] == 0){
-                delete[] this->tptr;
+                delete this->tptr;
             }
             this->tptr = nullptr;
         }
@@ -99,7 +99,7 @@ public:
         if (this->tptr != nullptr) {
             Shared_ptr_control_block<T>.table[this->tptr]--;
             if (Shared_ptr_control_block<T>.table[this->tptr] == 0){
-                delete[] this->tptr;
+                delete this->tptr;
             }
         }
         auto it = Shared_ptr_control_block<T>.table.find(ptr);
