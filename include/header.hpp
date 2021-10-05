@@ -17,8 +17,8 @@ public:
     shared_ptr_control_block(){}
     ~shared_ptr_control_block(){}
 private:
-    //std::map <T*, std::atomic_uint> table;
-    std::map <T*, int> table;
+    std::map <T*, std::atomic_uint> table;
+    //std::map <T*, int> table;
     friend class SharedPtr<T>;
 };
 
@@ -34,11 +34,14 @@ public:
     explicit SharedPtr(T* Ptr){
         auto it = Shared_ptr_control_block<T>.table.find(Ptr);
         if (it == Shared_ptr_control_block<T>.table.end()){
-            Shared_ptr_control_block<T>.table[Ptr] = 1;
+            T* newptr = new T(*Ptr);
+            Shared_ptr_control_block<T>.table[newptr] = 1;
+             this->tptr = newptr;
         } else{
             it->second++;
+             this->tptr = Ptr;
         }
-        this->tptr = Ptr;
+
     }
     SharedPtr(const SharedPtr& r){
         Shared_ptr_control_block<T>.table[r.tptr]++;
@@ -85,21 +88,42 @@ public:
         return this->tptr;
     }
     void reset(){
-        Shared_ptr_control_block<T>.table[this->tptr]--;
-        this->tptr = nullptr;
+        if (this->tptr != nullptr) {
+            Shared_ptr_control_block<T>.table[this->tptr]--;
+            if (Shared_ptr_control_block<T>.table[this->tptr] == 0){
+                delete[] this->tptr;
+            }
+            this->tptr = nullptr;
+        }
+
     }
     void reset(T* ptr){
-        Shared_ptr_control_block<T>.table[this->tptr]--;
-        this->tptr = ptr;
-        Shared_ptr_control_block<T>.table[this->tptr]++;
+        if (this->tptr != nullptr) {
+            Shared_ptr_control_block<T>.table[this->tptr]--;
+            if (Shared_ptr_control_block<T>.table[this->tptr] == 0){
+                delete[] this->tptr;
+            }
+        }
+        auto it = Shared_ptr_control_block<T>.table.find(ptr);
+        if (it == Shared_ptr_control_block<T>.table.end()){
+            T* newptr = new T(*ptr);
+            Shared_ptr_control_block<T>.table[newptr] = 1;
+             this->tptr = newptr;
+        } else{
+            it->second++;
+             this->tptr = ptr;
+        }
     }
     void swap(SharedPtr& r){
         std::swap(this->tptr, r.tptr);
     }
     // возвращает количество объектов SharedPtr,
     //которые ссылаются на тот же управляемый объект
-    auto use_count() const{
-        if (this->tptr == nullptr) return 0;
+    auto use_count() const -> size_t{
+        if (this->tptr == nullptr)
+        {
+            return 0;
+        }
         return Shared_ptr_control_block<T>.table[this->tptr];
     }
 

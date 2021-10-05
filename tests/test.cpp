@@ -14,17 +14,15 @@ TEST(SharedPtr, test1) {
     EXPECT_FALSE(A);
 }
 TEST(SharedPtr, test2) {
-    int *a = new int[1];
-    a[0] = 5;
-    SharedPtr<int> A(a);
+    int a = 5;
+    SharedPtr<int> A(&a);
     EXPECT_EQ(A.use_count(), 1);
     EXPECT_EQ(*A, 5);
 }
 
 TEST(SharedPtr, test3) {
-    int *a = new int[1];
-    a[0] = 5;
-    SharedPtr<int> A(a);
+    int a = 5;
+    SharedPtr<int> A(&a);
     SharedPtr<int> B;
     B = std::move(A);
     EXPECT_EQ(A.use_count(), 0);
@@ -34,9 +32,8 @@ TEST(SharedPtr, test3) {
 }
 
 TEST(SharedPtr, test4) {
-    int *a = new int[1];
-    a[0] = 5;
-    SharedPtr<int> A(a);
+    int a = 5;
+    SharedPtr<int> A(&a);
     SharedPtr<int> B = A;
     EXPECT_EQ(A.use_count(), 2);
     EXPECT_EQ(A.get()[0], 5);
@@ -45,35 +42,38 @@ TEST(SharedPtr, test4) {
 }
 
 TEST(SharedPtr, test5) {
-    int *a = new int[1];
-    a[0] = 5;
-    int *b = new int[1];
-    b[0] = 3;
-    SharedPtr<int> A(a);
-    SharedPtr<int> B(b);
+    int a = 5;
+    int b = 3;
+    SharedPtr<int> A(&a);
+    SharedPtr<int> B(&b);
     A.swap(B);
     EXPECT_EQ(*A, 3);
     EXPECT_EQ(*B, 5);
 }
 
 TEST(SharedPtr, test6) {
-    int *a = new int[1];
-    a[0] = 5;
-    int *b = new int[1];
-    b[0] = 3;
-    SharedPtr<int> A(a);
-    SharedPtr<int> B(b);
+    int a = 5;
+    int b = 3;
+    SharedPtr<int> A(&a);
+    SharedPtr<int> B(&b);
     A.reset();
     EXPECT_EQ(A.use_count(), 0);
     EXPECT_EQ(B.use_count(), 1);
-    A.reset(b);
-    EXPECT_EQ(*A, 3);
-    EXPECT_EQ(*B, 3);
-    EXPECT_EQ(A.use_count(), 2);
-    EXPECT_EQ(B.use_count(), 2);
 }
 
 TEST(SharedPtr, test7) {
+    int a = 5;
+    int b = 3;
+    SharedPtr<int> A(&a);
+    SharedPtr<int> B(&b);
+    A.reset(&b);
+    EXPECT_EQ(*A, 3);
+    EXPECT_EQ(*B, 3);
+    EXPECT_EQ(A.use_count(), 1);
+    EXPECT_EQ(B.use_count(), 1);
+}
+
+TEST(SharedPtr, test8) {
     class phone {
 
     private:
@@ -85,7 +85,7 @@ TEST(SharedPtr, test7) {
         int number;
     };
 
-    phone* a = new phone(123);
-    SharedPtr<phone> A(a);
+    phone a(123);
+    SharedPtr<phone> A(&a);
     EXPECT_EQ(A->number, 123);
 }

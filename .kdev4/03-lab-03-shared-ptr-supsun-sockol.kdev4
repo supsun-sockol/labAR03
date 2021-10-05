@@ -44,9 +44,19 @@ Name=tests
 Type=Native Application
 
 [Launch][Launch Configuration 1][Data]
+Break on Start=false
 Dependencies=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x01\x00\x00\x00\x0b\x00\x00\x00\x00\x02\x00\x00\x00D\x000\x003\x00-\x00l\x00a\x00b\x00-\x000\x003\x00-\x00s\x00h\x00a\x00r\x00e\x00d\x00-\x00p\x00t\x00r\x00-\x00s\x00u\x00p\x00s\x00u\x00n\x00-\x00s\x00o\x00c\x00k\x00o\x00l\x00\x00\x00\n\x00t\x00e\x00s\x00t\x00s)
 Dependency Action=Build
+LLDB Arguments=
+LLDB Config Script=
+LLDB Environment=
+LLDB Executable=file:///bin/gdb
+LLDB Inherit System Env=true
+LLDB Remote Debugging=false
+LLDB Remote Path=
+LLDB Remote Server=
 Project Target=03-lab-03-shared-ptr-supsun-sockol,tests
+Start With=ApplicationOutput
 
 [Project]
 VersionControlSupport=kdevgit
